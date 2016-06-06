@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Websocket Chat</title>
+    <!-- Это все нужно утащить локально, от сюда -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/main.css"> <!-- Ну кроме этого, оно уже -->
+    <script src="//yastatic.net/jquery/2.2.3/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="//cdn.rawgit.com/gdi2290/angular-websocket/v1.0.9/angular-websocket.min.js"></script>
+    <script type="text/javascript" src="//cdn.rawgit.com/auth0/angular-jwt/master/dist/angular-jwt.js"></script>
+    <!-- до сюда, и сжать чем-нибудь вроде gulp, но так лень -->
+    <script defer src="/static/js/base.js"></script>
+</head>
+<body ng-app="chatApplication">
+    <div class="container">
+        <div class="page-header">
+        <h1>Websocket Chat</h1>
+        <p class="lead">Tornado, Redis, Angular(1.4), JWT</p> <!-- Чем пользовался -->
+      </div>
+      <div class="row" ng-controller="ChatController">
+        <div class="col-md-4">
+            <div ng-show="activeState == 'registration'">
+                <h3>Registration <span>or <a href="javascript:void(0)" data-ng-click="activeState='auth'">Sign In</a></span></h3>
+                <div class="form-group">
+                    <input type="text" ng-model="userData.email" class="form-control" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <input type="text" ng-model="userData.first_name" class="form-control" placeholder="First name">
+                </div>
+                <div class="form-group">
+                    <input type="text" ng-model="userData.last_name" class="form-control" placeholder="Last name">
+                </div>
+                <div class="form-group">
+                    <input type="password" nd-model="userData.password" class="form-control" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <button data-ng-click="register()" class="btn btn-info">Registration</button>
+                </div>
+            </div>
+            <div ng-show="activeState == 'auth'">
+                <h3>Sign in <span>or <a href="javascript:void(0)" data-ng-click="activeState='registration'">Registration</a></span></h3>
+                <div class="form-group">
+                    <input type="text" ng-model="userData.email" class="form-control" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <input type="password" ng-model="userData.password" class="form-control" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <button data-ng-click="auth()" class="btn btn-info">Auth</button>
+                </div>
+            </div>
+            <div ng-show="activeState == 'authorized'">
+                <h3>Users <span class="badge">{* users.data.length *}</span></h3>
+                <ul class="list-group" data-ng-repeat="user in users.data">
+                  <li class="list-group-item">
+                      <a data-ng-click="prepareMessage(user.email)" href="javascript:void(0)">{* user.first_name *} {* user.last_name *}</a>
+                  </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div data-ng-show="activeState == 'authorized'" class="input-group message-input">
+                <input ng-keypress="sendMessage($event)" type="text" ng-model="messageData.text" class="form-control" placeholder="{* messageData.to ? 'Write to: ' + messageData.to : 'New message' *}">
+                <span class="input-group-btn">
+                    <button ng-click="sendMessage()" class="btn btn-default" type="button">Send</button>
+                </span>
+            </div>
+            <div class="messages-wrapper">
+                <div data-ng-repeat="message in messages.data">
+                    <div class="well well-lg">
+                        <a data-ng-click="prepareMessage(message.from.email)" href="#">{* message.from.first_name *} {* message.from.last_name *}</a> >
+                        <a data-ng-click="prepareMessage(message.to.email)" data-ng-if="message.to" href="#">{* message.to.first_name *} {* message.to.last_name *}</a>
+                        {* message.text *}
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+# Dependencies
+tornado==4.3
+wtforms-tornado==0.0.2 # web forms
+peewee==2.8.1          # DB ORM
+PyJWT==1.4.0           # JWT handler
+tornado-redis==2.4.18  # async redis client
