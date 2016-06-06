@@ -17,3 +17,7 @@ Workflow:
 - Server will return him his data with generated JWT with 'HS256' algorithm
 - With this token user can connect to chat and users websockets
 - Server will validate token
+
+To start application use should:
+- Start redis server on standart 6379 port
+- python application.py
