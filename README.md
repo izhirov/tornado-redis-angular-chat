@@ -19,5 +19,6 @@ Workflow:
 - Server will validate token
 
 To start application use should:
+- pip install -r requirements.txt
 - Start redis server on standart 6379 port
 - python application.py
