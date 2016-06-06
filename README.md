@@ -8,6 +8,7 @@ Dependencies
 - wtfforms-tornado
 - pyjwt
 - pewee
+- Python 3.5
 
 In this example use sqlite to save users in database. You can change it in application.py
 - db = SqliteDatabase('chat.db')
